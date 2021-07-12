@@ -9,7 +9,7 @@ export const getPokes =async (limit,page)=>{
     }
 }
 
-export const getPoke =async (n)=>{
+export const getPoke =async(n)=>{
     try {
         const res = await Client.get(`pokemon/${n}`)
         return res.data

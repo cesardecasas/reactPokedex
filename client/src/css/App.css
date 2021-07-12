@@ -66,3 +66,10 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
+
+.poke:hover{
+  color: #FFFFFF;
+  background-color: #2ec6dd;
+  width: 110%;
+  height: 110%;
+}

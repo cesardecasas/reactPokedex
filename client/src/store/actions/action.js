@@ -1,5 +1,5 @@
-import {SEARCH_VALUE, POKEMONS} from '../types'
-import {getPokes} from '../../services/service'
+import {SEARCH_VALUE, POKEMONS, INF} from '../types'
+import {getPokes, getPoke} from '../../services/service'
 
 export const search=(name,value)=>({
     type:SEARCH_VALUE,
@@ -21,3 +21,17 @@ export const getPokemon =(limit,page)=>async(dispatch)=>{
       return error 
   }
 } 
+
+export const getInf =(n)=>async(dispatch)=>{
+    try {
+        const pokemon = await getPoke(n)
+        console.log(pokemon)
+        dispatch({
+            type:INF,
+            payload:pokemon
+        })
+        
+    } catch (error) {
+        return error 
+    }
+  } 

@@ -9,12 +9,12 @@ export const search=(name,value)=>({
       }
 })
 
-export const getRandom =()=>async(dispatch)=>{
+export const getPokemon =(limit,page)=>async(dispatch)=>{
   try {
-      const products = await getPokes()
+      const pokemon = await getPokes(limit,page)
       dispatch({
           type:POKEMONS,
-          payload:products
+          payload:pokemon
       })
       
   } catch (error) {

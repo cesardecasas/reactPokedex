@@ -1,8 +1,17 @@
-import Api from './api'
+import Client from './api'
 
-export const getPokes =(limit,page)=>{
+export const getPokes =async (limit,page)=>{
     try {
-        const res = Api.get(`pokemon?limit=${limit}&offset=${page}`)
+        const res = await Client.get(`pokemon?limit=${limit}&offset=${page}`)
+        return res.data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const getPoke =async (n)=>{
+    try {
+        const res = await Client.get(`pokemon/${n}`)
         return res.data
     } catch (error) {
         console.log(error)

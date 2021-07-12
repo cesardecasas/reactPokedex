@@ -1,1 +1,3 @@
 # reactPokedex
+
+updated react pokedex

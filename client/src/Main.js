@@ -24,7 +24,13 @@ const Main =(props)=>{
 
 
     const handleChange=(e)=>{
-        props.searchValue(e.target.name, e.target.value)
+        switch (e.target.value){
+            case "false": 
+                return props.searchValue(e.target.name, false)
+            default:
+                return props.searchValue(e.target.name, e.target.value)
+        }
+        
     }
 
     const handleIntChange=(e)=>{
@@ -84,16 +90,30 @@ const Main =(props)=>{
                             className="form-control me-2"
                         />
                 <button>search</button>
+                <select onChange={handleIntChange} name="limit">
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
             </div>
+            <br/>
             {pokemon ? 
             <body className='detail'>
                 {inf ? <div className='countour'>
-                    <button>X</button>
+                    <div className='contents'>
+                        <button type="button" class="btn-float-left" name='pokemon' value={false} onClick={handleChange}>X</button>
+                    </div>
                     <h3>{inf.name} #{inf.id}</h3>
                     <img  src={inf.sprites.front_default} alt='sprite'/>
+                    <div className='types'>
+                        {inf.types.map((type, index)=><p className='type'>{type.type.name}</p>)}
+                    </div>
+                    <div className='stats'>
+                        {inf.stats.map((stat, index)=><p className='stat'>{stat.stat.name}: {stat.base_stat}</p>)}
+                    </div>
                     <p>{inf.weight} kg</p>
-                    {inf.types.map((type, index)=><p>{type.type.name}</p>)}
-                    {inf.stats.map((stat, index)=><p>{stat.stat.name}: {stat.base_stat}</p>)}
+
                     
                     <p>Description</p>
                 </div> :

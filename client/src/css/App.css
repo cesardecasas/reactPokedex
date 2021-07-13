@@ -37,6 +37,7 @@ main{
 	float: left;	
   margin-left: 10%;
   margin-top: 2.5%;
+  border-radius: 10rem;
 }
 
 .types{

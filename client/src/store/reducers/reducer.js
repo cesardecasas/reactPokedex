@@ -2,7 +2,7 @@ import {SEARCH_VALUE, POKEMONS, INF, TYPE} from '../types'
 
 const initialState = {
     search:'',
-    limit:10,
+    limit:12,
     page:0,
     pokemons:[],
     pokemon:false,

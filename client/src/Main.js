@@ -3,6 +3,7 @@ import TextInput from './TextInput'
 import {connect} from 'react-redux'
 import {search, getPokemon, getInf, getPokeTy} from './store/actions/action'
 import pokeTypes from './types.json'
+import Spinner from 'react-bootstrap/Spinner'
 
 
 
@@ -22,7 +23,7 @@ const mapDispatchToProps =(dispatch)=>{
 }
 
 const Main =(props)=>{
-    const {search, limit, page, pokemons, pokemon, inf, type, nType, pokeType} = props.state
+    const {search, limit, page, pokemons, pokemon, inf, type, pokeType} = props.state
 
 
     const handleChange=(e)=>{
@@ -133,7 +134,9 @@ const Main =(props)=>{
                     <p>Description</p>
                 </div> :
                 
-                <p>Loading</p>}
+                <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </Spinner>}
             </body>
             
             : <div>
@@ -148,7 +151,9 @@ const Main =(props)=>{
                                 <p>{poke.pokemon.name} #{n}</p>
                             </div>
                         )
-                    }) : <div>Loading</div>}
+                    }) : <Spinner animation="border" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </Spinner>}
                 </body> :    
 
                 <body className='poke-grid'>
@@ -160,13 +165,15 @@ const Main =(props)=>{
                             <p>{poke.name} #{n}</p>
                         </div>
                     )
-                }) : <div>Loading</div>}
+                }) : <Spinner animation="border" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>}
             </body>
             }
             <footer>
                 <div>
                 <select onChange={handleIntChange} name="limit">
-                    <option value={10}>10</option>
+                    <option value={12}>12</option>
                     <option value={20}>20</option>
                     <option value="50">50</option>
                     <option value="100">100</option>

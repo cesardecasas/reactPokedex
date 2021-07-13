@@ -17,3 +17,12 @@ export const getPoke =async(n)=>{
         console.log(error)
     }
 }
+
+export const getPokeType =async(n)=>{
+    try {
+        const res = await Client.get(`type/${n}`)
+        return res.data
+    } catch (error) {
+        console.log(error)
+    }
+}

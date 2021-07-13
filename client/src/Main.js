@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 import TextInput from './TextInput'
 import {connect} from 'react-redux'
-import {search, getPokemon, getInf} from './store/actions/action' 
+import {search, getPokemon, getInf, getPokeTy} from './store/actions/action'
+import pokeTypes from './types.json'
 
 
 
@@ -15,15 +16,23 @@ const mapDispatchToProps =(dispatch)=>{
     return{
         searchValue:(name,value)=>dispatch(search(name,value)),
         getPokemon:(limit, page)=>dispatch(getPokemon(limit,page)),
-        getInf:(n)=>dispatch(getInf(n))
+        getInf:(n)=>dispatch(getInf(n)),
+        getTyPoke:(n)=>dispatch(getPokeTy(n))
     }
 }
 
 const Main =(props)=>{
-    const {search, limit, page, pokemons, pokemon, inf} = props.state
+    const {search, limit, page, pokemons, pokemon, inf, type, nType, pokeType} = props.state
 
 
     const handleChange=(e)=>{
+        if(e.target.name === 'nType' && e.target.value !== "false"){
+            props.searchValue(e.target.name, e.target.value)
+            props.searchValue("type", true)
+            populateType(e.target.value)
+        } else if(e.target.name === 'nType' && e.target.value === "false"){
+            props.searchValue("type", false)
+        }
         switch (e.target.value){
             case "false": 
                 return props.searchValue(e.target.name, false)
@@ -40,6 +49,15 @@ const Main =(props)=>{
     const populate= async()=>{
         try {
             props.getPokemon(limit,page)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const populateType= async(n)=>{
+        try {
+            console.log(1)
+            props.getTyPoke(n)
         } catch (error) {
             console.log(error)
         }
@@ -67,7 +85,6 @@ const Main =(props)=>{
         try {
             props.searchValue('page',page-limit)
             await props.getPokemon(limit,page)
-            console.log(page)
         } catch (error) {
             console.log(error)
         }
@@ -90,11 +107,9 @@ const Main =(props)=>{
                             className="form-control me-2"
                         />
                 <button>search</button>
-                <select onChange={handleIntChange} name="limit">
-                    <option value={10}>10</option>
-                    <option value={20}>20</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
+                <select onChange={handleChange} name="nType">
+                    <option value={false}>Type</option>
+                    {pokeTypes.Poke.map((type,index)=><option key={index} value={type.name}>{type.name}</option>)}
                 </select>
             </div>
             <br/>
@@ -107,10 +122,10 @@ const Main =(props)=>{
                     <h3>{inf.name} #{inf.id}</h3>
                     <img  src={inf.sprites.front_default} alt='sprite'/>
                     <div className='types'>
-                        {inf.types.map((type, index)=><p className='type'>{type.type.name}</p>)}
+                        {inf.types.map((type, index)=><p key={index} className='type'>{type.type.name}</p>)}
                     </div>
                     <div className='stats'>
-                        {inf.stats.map((stat, index)=><p className='stat'>{stat.stat.name}: {stat.base_stat}</p>)}
+                        {inf.stats.map((stat, index)=><p key={index} className='stat'>{stat.stat.name}: {stat.base_stat}</p>)}
                     </div>
                     <p>{inf.weight} kg</p>
 
@@ -122,7 +137,21 @@ const Main =(props)=>{
             </body>
             
             : <div>
-            <body className='poke-grid'>
+                {type ? 
+                    <body className='poke-grid'>
+                    {pokeType ? pokeType.map((poke, index)=>{
+                        console.log(poke)
+                        let n = poke.pokemon.url.split('pokemon/')[1].split('/')[0]
+                        return(
+                            <div key={index} className='poke' onClick={()=>submit(n)}>
+                                <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${n}.png`} alt='pokemon'/>
+                                <p>{poke.pokemon.name} #{n}</p>
+                            </div>
+                        )
+                    }) : <div>Loading</div>}
+                </body> :    
+
+                <body className='poke-grid'>
                 {pokemons ? pokemons.map((poke, index)=>{
                     let n = poke.url.split('pokemon/')[1].split('/')[0]
                     return(
@@ -133,6 +162,7 @@ const Main =(props)=>{
                     )
                 }) : <div>Loading</div>}
             </body>
+            }
             <footer>
                 <div>
                 <select onChange={handleIntChange} name="limit">

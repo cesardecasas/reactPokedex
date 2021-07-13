@@ -1,0 +1,37 @@
+{
+    "Poke":[
+    {"name":"ghost"},
+
+    {"name":"steel"},
+
+    {"name":"ice"},
+
+    {"name":"electric"},
+
+    {"name":"normal"},
+
+    {"name":"fire"},
+
+    {"name":"psychic"},
+
+    {"name":"flying"},
+
+    {"name":"poison"},
+
+    {"name":"dragon"},
+
+    {"name":"water"},
+
+    {"name":"fighting"},
+
+    {"name":"rock"},
+
+    {"name":"dark"},
+
+    {"name":"grass"},
+
+    {"name":"bug"},
+
+    {"name" :"ground"}
+    ]
+}

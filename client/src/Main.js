@@ -86,8 +86,9 @@ const Main =(props)=>{
                 <button>search</button>
             </div>
             {pokemon ? 
-            <body>
-                {inf ? <div>
+            <body className='detail'>
+                {inf ? <div className='countour'>
+                    <button>X</button>
                     <h3>{inf.name} #{inf.id}</h3>
                     <img  src={inf.sprites.front_default} alt='sprite'/>
                     <p>{inf.weight} kg</p>

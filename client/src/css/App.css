@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  background-color: #00A4BD;
+
 }
 
 .App-logo {
@@ -72,4 +74,20 @@
   background-color: #2ec6dd;
   width: 110%;
   height: 110%;
+}
+
+main{
+  background-color: #00A4BD;
+}
+
+.countour{
+  background-color: #fafafa77;
+  width: 40%;
+  grid-column: 2;
+  
+}
+
+.detail{
+  display: grid;
+  grid-template-columns: 25% 50% 25%;
 }

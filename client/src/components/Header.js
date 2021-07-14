@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import {connect} from 'react-redux'
-import {search, getPokemon, getInf, getPokeTy} from './store/actions/action'
-import pokeTypes from './types.json'
+import {search, getPokemon, getInf, getPokeTy} from '../store/actions/action'
 import TextInput from './TextInput'
 
 const mapStateToProps =({state})=>{
@@ -21,7 +20,7 @@ const mapDispatchToProps =(dispatch)=>{
 
 const Header=(props)=>{
 
-    const {search, limit, page, pokemons, pokemon, inf, type, pokeType} = props.state
+    const {search} = props.state
 
     const handleChange=(e)=>{
         if(e.target.name === 'nType' && e.target.value !== "false"){
@@ -68,12 +67,13 @@ const Header=(props)=>{
                         />
                 <button className='submit'>search</button>
             </div>
-            <div className='filter'>
+            {/* on progress */}
+            {/* <div className='filter'>
                 <select onChange={handleChange} name="nType" className='select'>
                         <option value={false}>Type</option>
                         {pokeTypes.Poke.map((type,index)=><option key={index} value={type.name}>{type.name}</option>)}
                 </select>
-            </div>
+            </div> */}
         </header>
     )
 }

@@ -4,6 +4,8 @@ import {connect} from 'react-redux'
 import {search, getPokemon, getInf, getPokeTy} from './store/actions/action'
 import pokeTypes from './types.json'
 import Spinner from 'react-bootstrap/Spinner'
+import CloseButton from 'react-bootstrap/CloseButton'
+import Footer from './Footer'
 
 
 
@@ -170,26 +172,27 @@ const Main =(props)=>{
                     </Spinner>}
             </body>
             }
-            <footer>
-                <div>
-                <select onChange={handleIntChange} name="limit">
-                    <option value={12}>12</option>
-                    <option value={20}>20</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-                </div>
-                <div>
-                    {page <= 0 ? <button onClick={nextPage}>Next</button> : 
+                <div className='bottom'>
                     <div>
-                        <button onClick={prevPage}>Back</button>
-                        <button onClick={nextPage}>Next</button>
+                        <select onChange={handleIntChange} name="limit">
+                            <option value={12}>12</option>
+                            <option value={20}>20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
                     </div>
-                    
-                    }
+                    <div>
+                        {page <= 0 ? <button onClick={nextPage}>Next</button> : 
+                        <div>
+                            <button onClick={prevPage}>Back</button>
+                            <button onClick={nextPage}>Next</button>
+                        </div>
+                        
+                        }
+                    </div>
                 </div>
-            </footer>
             </div> }
+            <Footer/>
             
         </main>
     )

@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react'
-import TextInput from './TextInput'
 import {connect} from 'react-redux'
 import {search, getPokemon, getInf, getPokeTy} from './store/actions/action'
-import pokeTypes from './types.json'
 import Spinner from 'react-bootstrap/Spinner'
-import CloseButton from 'react-bootstrap/CloseButton'
 import Footer from './Footer'
+import Header from './Header'
 
 
 
@@ -25,7 +23,7 @@ const mapDispatchToProps =(dispatch)=>{
 }
 
 const Main =(props)=>{
-    const {search, limit, page, pokemons, pokemon, inf, type, pokeType} = props.state
+    const {limit, page, pokemons, pokemon, inf, type, pokeType} = props.state
 
 
     const handleChange=(e)=>{
@@ -51,7 +49,8 @@ const Main =(props)=>{
 
     const populate= async()=>{
         try {
-            props.getPokemon(limit,page)
+            props.getPokemon(limit,0)
+            props.searchValue('page',1)
         } catch (error) {
             console.log(error)
         }
@@ -59,7 +58,7 @@ const Main =(props)=>{
 
     const populateType= async(n)=>{
         try {
-            console.log(1)
+
             props.getTyPoke(n)
         } catch (error) {
             console.log(error)
@@ -68,17 +67,15 @@ const Main =(props)=>{
 
     const nextPage=async()=>{
         try {
-            props.searchValue('page',page+limit)
-            await props.getPokemon(limit,page)
+            if(page === 0){
+                props.searchValue('page',page+2)
+                await props.getPokemon(limit,page*limit)
+            }else{
+                props.searchValue('page',page+1)
+                await props.getPokemon(limit,page*limit)
+            }
+            
             console.log(page)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const submit=async(n)=>{
-        try {
-            await props.getInf(n)
         } catch (error) {
             console.log(error)
         }
@@ -86,8 +83,16 @@ const Main =(props)=>{
 
     const prevPage=async()=>{
         try {
-            props.searchValue('page',page-limit)
-            await props.getPokemon(limit,page)
+            props.searchValue('page', page-1)
+            await props.getPokemon(limit,page*limit)
+            console.log(page)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    const submit=async(n)=>{
+        try {
+            await props.getInf(n)
         } catch (error) {
             console.log(error)
         }
@@ -99,22 +104,8 @@ const Main =(props)=>{
 
     return (
         <main>
-            
-                <div>
-                <TextInput
-                            placeholder='Search'
-                            type='text'
-                            name='search'
-                            value={search}
-                            onChange={handleChange}
-                            className="form-control me-2"
-                        />
-                <button>search</button>
-                <select onChange={handleChange} name="nType">
-                    <option value={false}>Type</option>
-                    {pokeTypes.Poke.map((type,index)=><option key={index} value={type.name}>{type.name}</option>)}
-                </select>
-            </div>
+                <Header/>
+                
             <br/>
             {pokemon ? 
             <body className='detail'>
@@ -182,7 +173,7 @@ const Main =(props)=>{
                         </select>
                     </div>
                     <div>
-                        {page <= 0 ? <button onClick={nextPage}>Next</button> : 
+                        {page <= 1 ? <button onClick={nextPage}>Next</button> : 
                         <div>
                             <button onClick={prevPage}>Back</button>
                             <button onClick={nextPage}>Next</button>

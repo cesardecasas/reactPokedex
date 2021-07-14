@@ -3,13 +3,14 @@ import {SEARCH_VALUE, POKEMONS, INF, TYPE} from '../types'
 const initialState = {
     search:'',
     limit:12,
-    page:0,
+    page:1,
     pokemons:[],
     pokemon:false,
     inf:{},
     type:false,
     nType:"",
-    pokeType:[]
+    pokeType:[],
+
 }
 
 const Reducer=( state =initialState, action)=>{

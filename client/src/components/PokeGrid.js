@@ -13,8 +13,10 @@ const PokeGrid =(props)=>{
                 {pokemons ? pokemons.map((poke, index)=>{
                     
                     let n = poke.url.split('pokemon/')[1].split('/')[0]
+                    
+                    
                     return(
-                        <Pokemon n={n} index={index} poke={poke} submit={submit}/>
+                        <Pokemon number={n} key={index} poke={poke} submit={submit} />
                     )
                 }) : <Spinner animation="border" role="status">
                         <span className="sr-only">Loading...</span>

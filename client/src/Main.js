@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {connect} from 'react-redux'
 import {search, getPokemon, getInf, getPokeTy} from './store/actions/action'
 import Footer from './components/Footer'
 import Header from './components/Header'
 import PokeGrid from './components/PokeGrid'
 import PokeInf from './components/PokeInf'
+
 
 
 const mapStateToProps =({state})=>{
@@ -66,6 +67,8 @@ const Main =(props)=>{
     const submit=(n)=>{
             props.getInf(n)
     }
+
+    
    
     useEffect(()=>{
         populate()
@@ -75,10 +78,8 @@ const Main =(props)=>{
         <main>
             <Header/> 
             <br/>
-            {pokemon ? 
-                <PokeInf inf={inf} handleChange={handleChange}/>
-            :   <div>
-                <PokeGrid pokemons={pokemons} submit={submit}/>
+              <div>
+                <PokeGrid pokemons={pokemons} submit={submit} inf={inf} handleChange={handleChange} />
                 <div className='bottom'>
                     <div>
                         <select onChange={handleIntChange} name="limit">
@@ -98,7 +99,7 @@ const Main =(props)=>{
                         }
                     </div>
                 </div>
-            </div> }
+            </div> 
             <Footer/>
             
         </main>

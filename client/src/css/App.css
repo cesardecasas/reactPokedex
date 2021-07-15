@@ -91,6 +91,8 @@ main{
 .submit{
   border-radius: 0 1rem 1rem 0;
   border-color: #FFFFFF;
+  height: 50%;
+  size: 10px;
 }
 
 .select{
@@ -110,4 +112,10 @@ option:hover{
 
 .title{
   width: 20%;
+}
+
+.form{
+  width: 50%;
+  align-self: center;
+  margin-left: 25%;
 }

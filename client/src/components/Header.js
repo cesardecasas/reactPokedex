@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
 import {connect} from 'react-redux'
 import {search, getPokemon, getInf, getPokeTy} from '../store/actions/action'
-import TextInput from './TextInput'
+import { FiSearch} from "react-icons/fi";
+import { Button, InputGroup, FormControl} from 'react-bootstrap'
+
 
 const mapStateToProps =({state})=>{
     return{
@@ -56,16 +58,20 @@ const Header=(props)=>{
     return(
         <header>
             <img src='https://cdn2.bulbagarden.net/upload/4/4b/Pok%C3%A9dex_logo.png' alt='title' className='title'/>
-            <div>
-                <TextInput
-                            placeholder='Search'
-                            type='text'
-                            name='search'
-                            value={search}
-                            onChange={handleChange}
-                            className="text-input"
-                        />
-                <button className='submit'>search</button>
+            <div className='form'>
+            <InputGroup className="mb-3">
+                <FormControl
+                placeholder="Pokemon's name"
+                aria-label="Pokemon's name"
+                aria-describedby="basic-addon2"
+                name='search'
+                value={search}
+                onChange={handleChange}
+                />
+                <Button variant="outline-secondary" id="button-addon2">
+                <FiSearch/>
+                </Button>
+            </InputGroup>
             </div>
             {/* on progress */}
             {/* <div className='filter'>

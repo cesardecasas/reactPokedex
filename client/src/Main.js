@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import {connect} from 'react-redux'
 import {search, getPokemon, getInf, getPokeTy} from './store/actions/action'
 import Footer from './components/Footer'
 import Header from './components/Header'
 import PokeGrid from './components/PokeGrid'
-import PokeInf from './components/PokeInf'
-
-
 
 const mapStateToProps =({state})=>{
     return{
@@ -24,7 +21,7 @@ const mapDispatchToProps =(dispatch)=>{
 }
 
 const Main =(props)=>{
-    const {limit, page, pokemons, pokemon, inf} = props.state
+    const {limit, page, pokemons, inf} = props.state
 
 
     const handleChange=(e)=>{
@@ -58,7 +55,7 @@ const Main =(props)=>{
     const prevPage=async()=>{
         try {
             props.updateValue('page', page-1)
-            await props.getPokemon(limit,((1-page)*limit)-limit)
+            await props.getPokemon(limit,(page*limit)-limit)
             console.log(page)
         } catch (error) {
             console.log(error)

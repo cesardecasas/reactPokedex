@@ -14,7 +14,7 @@ const PokeInf=(props)=>{
                     <div className='stats'>
                         {inf.stats.map((stat, index)=><p key={index} className='stat'>{stat.stat.name}: {stat.base_stat}</p>)}
                     </div>
-                    <p>{inf.weight} kg</p>
+                    <p>weigth: {inf.weight} kg</p>
                 </div> 
             </div>
     )

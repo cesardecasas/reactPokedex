@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {connect} from 'react-redux'
 import {search, getPokemon, getInf, getPokeTy} from '../store/actions/action'
 import { FiSearch} from "react-icons/fi";
@@ -13,7 +13,7 @@ const mapStateToProps =({state})=>{
 
 const mapDispatchToProps =(dispatch)=>{
     return{
-        searchValue:(name,value)=>dispatch(search(name,value)),
+        updateValue:(name,value)=>dispatch(search(name,value)),
         getPokemon:(limit, page)=>dispatch(getPokemon(limit,page)),
         getInf:(n)=>dispatch(getInf(n)),
         getTyPoke:(n)=>dispatch(getPokeTy(n))
@@ -22,30 +22,40 @@ const mapDispatchToProps =(dispatch)=>{
 
 const Header=(props)=>{
 
-    const {search} = props.state
+    const {search, inf} = props.state
+
+    const [error, setError] = useState(false)
 
     const handleChange=(e)=>{
         if(e.target.name === 'nType' && e.target.value !== "false"){
-            props.searchValue(e.target.name, e.target.value)
-            props.searchValue("type", true)
+            props.updateValue(e.target.name, e.target.value)
+            props.updateValue("type", true)
             populateType(e.target.value)
         } else if(e.target.name === 'nType' && e.target.value === "false"){
             props.searchValue("type", false)
         }
         switch (e.target.value){
             case "false": 
-                return props.searchValue(e.target.name, false)
+                return props.updateValue(e.target.name, false)
             default:
-                return props.searchValue(e.target.name, e.target.value)
+                return props.updateValue(e.target.name, e.target.value)
         }
         
     }
 
     const populateType= async(n)=>{
         try {
-
             props.getTyPoke(n)
         } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const submit=()=>{
+        try {
+            props.getInf(search.toLowerCase())
+        } catch (error) {
+            setError(true)
             console.log(error)
         }
     }
@@ -68,7 +78,7 @@ const Header=(props)=>{
                 value={search}
                 onChange={handleChange}
                 />
-                <Button variant="outline-secondary" id="button-addon2">
+                <Button variant="outline-secondary" id="button-addon2" onClick={submit}>
                 <FiSearch/>
                 </Button>
             </InputGroup>

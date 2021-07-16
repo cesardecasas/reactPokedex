@@ -4,6 +4,7 @@ import {search, getPokemon, getInf, getPokeTy} from './store/actions/action'
 import Footer from './components/Footer'
 import Header from './components/Header'
 import PokeGrid from './components/PokeGrid'
+import {DropdownButton, Dropdown} from 'react-bootstrap'
 
 const mapStateToProps =({state})=>{
     return{
@@ -35,7 +36,7 @@ const Main =(props)=>{
     }
 
     const handleIntChange=(e)=>{
-        props.updateValue(e.target.name, parseInt(e.target.value))
+        props.updateValue(e.target.name, parseInt(e.target.innerHTML))
     }
 
     const populate= async()=>{
@@ -78,14 +79,12 @@ const Main =(props)=>{
               <div>
                 <PokeGrid pokemons={pokemons} submit={submit} inf={inf} handleChange={handleChange} />
                 <div className='bottom'>
-                    <div>
-                        <select onChange={handleIntChange} name="limit">
-                            <option value={12}>12</option>
-                            <option value={20}>20</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                        </select>
-                    </div>
+                <DropdownButton id="dropdown-basic-button" title="Limit" name="limit" onChange={handleIntChange}>
+                    <Dropdown.Item onClick={handleIntChange} name='limit' value='12' >12</Dropdown.Item>
+                    <Dropdown.Item onClick={handleIntChange} name='limit' value={20}>20</Dropdown.Item>
+                    <Dropdown.Item onClick={handleIntChange} name='limit' value='50'>50</Dropdown.Item>
+                    <Dropdown.Item onClick={handleIntChange} name='limit' value='100'>100</Dropdown.Item>
+                </DropdownButton>
                     <div>
                         {page <= 1 ? <button onClick={nextPage}>Next</button> : 
                         <div>

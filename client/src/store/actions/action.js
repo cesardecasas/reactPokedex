@@ -1,4 +1,4 @@
-import {SEARCH_VALUE, POKEMONS, INF, TYPE} from '../types'
+import {SEARCH_VALUE, POKEMONS, INF, TYPE, CACHE} from '../types'
 import {getPokes, getPoke, getPokeType} from '../../services/service'
 
 export const search=(name,value)=>({
@@ -7,6 +7,14 @@ export const search=(name,value)=>({
         name,
         value
       }
+})
+
+export const saveCache=(num,obj)=>({
+    type:CACHE,
+    payload: {
+        num,
+        obj
+    }
 })
 
 export const getPokemon =(limit,page)=>async(dispatch)=>{

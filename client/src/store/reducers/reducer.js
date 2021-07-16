@@ -1,20 +1,15 @@
-import {SEARCH_VALUE, POKEMONS, INF, TYPE} from '../types'
+import {SEARCH_VALUE, POKEMONS, INF, TYPE, CACHE} from '../types'
 
 const initialState = {
     search:'',
     limit:12,
     page:1,
     pokemons:[],
-    pokemon:false,
     inf:{},
-    type:false,
-    nType:"",
-    pokeType:[],
-
+    pokeCache:{}
 }
 
 const Reducer=( state =initialState, action)=>{
-    
     switch(action.type){
         case SEARCH_VALUE:
             return{...state, [action.payload.name]: action.payload.value}
@@ -24,6 +19,8 @@ const Reducer=( state =initialState, action)=>{
             return{...state,inf:action.payload, pokemon:true}
         case TYPE:
             return{...state,pokeType:action.payload}
+        case CACHE:
+            return{...state, pokeCache: { ...state.pokeCache, [action.payload.num]:action.payload.obj}}
         default:
             return { ...state }
     }

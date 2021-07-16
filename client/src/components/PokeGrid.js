@@ -5,7 +5,7 @@ import Spinner from 'react-bootstrap/Spinner'
 
 const PokeGrid =(props)=>{
 
-    const{pokemons, submit}=props
+    const{pokemons, submit, saveCache, pokeCache}=props
 
 
     return(
@@ -16,7 +16,7 @@ const PokeGrid =(props)=>{
                     
                     
                     return(
-                        <Pokemon number={n} key={index} poke={poke} submit={submit} />
+                        <Pokemon number={n} key={index} poke={poke} submit={submit} saveCache={saveCache} pokeCache={pokeCache} />
                     )
                 }) : <Spinner animation="border" role="status">
                         <span className="sr-only">Loading...</span>

@@ -6,16 +6,23 @@ import Spinner from 'react-bootstrap/Spinner'
 
 
 
+
 const Pokemon =(props)=>{
-    const{number}=props
+    const{number, saveCache, pokeCache}=props
     
     const [open, setOpen] = useState(false)
     const [pokemon, setPokemon]= useState({})
 
     const getInf =async()=>{
         try {
-            let inf = await getPoke(number)
-            setPokemon(inf)
+            if(`${number}` in pokeCache){
+                setPokemon(pokeCache[`${number}`])
+            }else{
+                let inf = await getPoke(number)
+                setPokemon(inf)
+                console.log(inf)
+                saveCache(number, inf)
+            } 
         } catch (error) {
             console.log(error)
         }

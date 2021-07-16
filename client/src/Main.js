@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react'
 import {connect} from 'react-redux'
-import {search, getPokemon, getInf, getPokeTy} from './store/actions/action'
+import {search, getPokemon, getInf, getPokeTy, saveCache} from './store/actions/action'
 import Footer from './components/Footer'
 import Header from './components/Header'
 import PokeGrid from './components/PokeGrid'
-import {DropdownButton, Dropdown} from 'react-bootstrap'
+import {DropdownButton, Dropdown, Button} from 'react-bootstrap'
+import { GrLinkPrevious, GrLinkNext} from 'react-icons/gr'
 
 const mapStateToProps =({state})=>{
     return{
@@ -17,12 +18,13 @@ const mapDispatchToProps =(dispatch)=>{
         updateValue:(name,value)=>dispatch(search(name,value)),
         getPokemon:(limit, page)=>dispatch(getPokemon(limit,page)),
         getInf:(n)=>dispatch(getInf(n)),
-        getTyPoke:(n)=>dispatch(getPokeTy(n))
+        getTyPoke:(n)=>dispatch(getPokeTy(n)),
+        saveCache:(num, obj)=>dispatch(saveCache(num, obj))
     }
 }
 
 const Main =(props)=>{
-    const {limit, page, pokemons, inf} = props.state
+    const {limit, page, pokemons, inf, pokeCache} = props.state
 
 
     const handleChange=(e)=>{
@@ -77,7 +79,7 @@ const Main =(props)=>{
             <Header/> 
             <br/>
               <div>
-                <PokeGrid pokemons={pokemons} submit={submit} inf={inf} handleChange={handleChange} />
+                <PokeGrid pokemons={pokemons} submit={submit} inf={inf} handleChange={handleChange} saveCache={props.saveCache} pokeCache={pokeCache} />
                 <div className='bottom'>
                 <DropdownButton id="dropdown-basic-button" title="Limit" name="limit" onChange={handleIntChange}>
                     <Dropdown.Item onClick={handleIntChange} name='limit' value='12' >12</Dropdown.Item>
@@ -86,14 +88,16 @@ const Main =(props)=>{
                     <Dropdown.Item onClick={handleIntChange} name='limit' value='100'>100</Dropdown.Item>
                 </DropdownButton>
                     <div>
-                        {page <= 1 ? <button onClick={nextPage}>Next</button> : 
+                        <br/>
+                        {page <= 1 ?  <Button variant="outline-dark" onClick={nextPage} ><GrLinkNext/> </Button> : 
                         <div>
-                            <button onClick={prevPage}>Back</button>
-                            <button onClick={nextPage}>Next</button>
+                            <Button variant="outline-dark" onClick={prevPage} ><GrLinkPrevious/></Button>
+                            <Button variant="outline-dark" onClick={nextPage} ><GrLinkNext/></Button>
                         </div>
                         
                         }
                     </div>
+                    <br/>
                 </div>
             </div> 
             <Footer/>

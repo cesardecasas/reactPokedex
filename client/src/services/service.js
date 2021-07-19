@@ -30,7 +30,6 @@ export const getPokeType =async(n)=>{
 export const getSearched=async(searchType, searchValue)=>{
     try {
         let type =searchType.toLowerCase()
-        console.log(searchType)
         switch(searchType){
             case 'Habitat':
                 const res = await Client.get(`pokemon-habitat/${searchValue}`)

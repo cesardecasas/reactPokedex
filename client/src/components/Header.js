@@ -26,7 +26,7 @@ const Header=(props)=>{
 
     const {search, searchType} = props.state
 
-    const [error, setError] = useState(false)
+    const [err, setError] = useState(false)
 
     const handleTypeChange=(e)=>{
         if(e.charAt(0) === e.charAt(0).toUpperCase()){
@@ -43,7 +43,6 @@ const Header=(props)=>{
     const submit=async()=>{
         try {
             const pokes = await getSearched(searchType,search.toLowerCase())
-            console.log(pokes)
             setError(false)
             if(pokes.pokemon){
                 props.updateValue('pokemons', pokes.pokemon)
@@ -53,7 +52,7 @@ const Header=(props)=>{
                 return
             }
         } catch (error) {
-            setError(!error)
+            setError(!err)
             console.log(error)
         }
         
@@ -67,12 +66,12 @@ const Header=(props)=>{
     return(
         <header>
             <img src='https://cdn2.bulbagarden.net/upload/4/4b/Pok%C3%A9dex_logo.png' alt='title' className='title'/>
-            {error ? <Alert>Something went wrong with your search, make sure the spelling is correct and try again</Alert> : <p></p>}
+            {err ? <Alert>Something went wrong with your search, make sure the spelling is correct and try again</Alert> : <p></p>}
             <div className='form'>
-            <InputGroup className="mb-3">
+            <InputGroup className="mb-3" onSubmit={()=>submit(searchType)}>
             <DropdownButton
             variant="outline-dark"
-            title="Search by"
+            title={`Search by ${searchType}`}
             id="dropdown-basic-button"
             name='searchType'
             onSelect={handleTypeChange}

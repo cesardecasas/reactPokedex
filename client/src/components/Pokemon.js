@@ -20,7 +20,6 @@ const Pokemon =(props)=>{
             }else{
                 let inf = await getPoke(number)
                 setPokemon(inf)
-                console.log(inf)
                 saveCache(number, inf)
             } 
         } catch (error) {
@@ -41,7 +40,7 @@ const Pokemon =(props)=>{
         <div className='poke' onClick={drop}>
             {pokemon.sprites ? <div>
                 <img src={pokemon.sprites.front_default} alt='pokemon'/>
-            <p>{pokemon.name} #{number}</p>
+            <p>{pokemon.name.charAt(0).toUpperCase()+pokemon.name.slice(1)} #{number}</p>
             <Collapse in={open} >
                 <div>
                     <PokeInf  inf={pokemon} />

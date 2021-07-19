@@ -11,9 +11,10 @@ const PokeGrid =(props)=>{
     return(
         <div className='poke-grid'>
                 {pokemons ? pokemons.map((poke, index)=>{
+
+                    let n
                     
-                    let n = poke.url.split('pokemon/')[1].split('/')[0]
-                    
+                    poke.pokemon ? n = poke.pokemon.url.split('pokemon/')[1].split('/')[0] : poke.url.includes('species') ? n = poke.url.split('species/')[1].split('/')[0] : n = poke.url.split('pokemon/')[1].split('/')[0]
                     
                     return(
                         <Pokemon number={n} key={index} poke={poke} submit={submit} saveCache={saveCache} pokeCache={pokeCache} />

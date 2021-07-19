@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react'
 import {connect} from 'react-redux'
 import {search, getPokemon, getInf, getPokeTy} from '../store/actions/action'
 import { FiSearch} from "react-icons/fi";
-import { Button, InputGroup, FormControl} from 'react-bootstrap'
+import { Button, InputGroup, FormControl, Dropdown, DropdownButton} from 'react-bootstrap'
+import { getSearched} from '../services/service'
+import Alert from 'react-bootstrap/Alert'
 
 
 const mapStateToProps =({state})=>{
@@ -22,42 +24,39 @@ const mapDispatchToProps =(dispatch)=>{
 
 const Header=(props)=>{
 
-    const {search, inf} = props.state
+    const {search, searchType} = props.state
 
     const [error, setError] = useState(false)
 
-    const handleChange=(e)=>{
-        if(e.target.name === 'nType' && e.target.value !== "false"){
-            props.updateValue(e.target.name, e.target.value)
-            props.updateValue("type", true)
-            populateType(e.target.value)
-        } else if(e.target.name === 'nType' && e.target.value === "false"){
-            props.searchValue("type", false)
+    const handleTypeChange=(e)=>{
+        if(e.charAt(0) === e.charAt(0).toUpperCase()){
+            props.updateValue('searchType', e)
+            return
         }
-        switch (e.target.value){
-            case "false": 
-                return props.updateValue(e.target.name, false)
-            default:
-                return props.updateValue(e.target.name, e.target.value)
+    }
+    
+    const handleChange=(e)=>{
+        props.updateValue(e.target.name, e.target.value)
+    }
+
+
+    const submit=async()=>{
+        try {
+            const pokes = await getSearched(searchType,search.toLowerCase())
+            console.log(pokes)
+            setError(false)
+            if(pokes.pokemon){
+                props.updateValue('pokemons', pokes.pokemon)
+                return
+            }else if(pokes.pokemon_species){
+                props.updateValue('pokemons', pokes.pokemon_species)
+                return
+            }
+        } catch (error) {
+            setError(!error)
+            console.log(error)
         }
         
-    }
-
-    const populateType= async(n)=>{
-        try {
-            props.getTyPoke(n)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const submit=()=>{
-        try {
-            props.getInf(search.toLowerCase())
-        } catch (error) {
-            setError(true)
-            console.log(error)
-        }
     }
 
 
@@ -68,28 +67,34 @@ const Header=(props)=>{
     return(
         <header>
             <img src='https://cdn2.bulbagarden.net/upload/4/4b/Pok%C3%A9dex_logo.png' alt='title' className='title'/>
+            {error ? <Alert>Something went wrong with your search, make sure the spelling is correct and try again</Alert> : <p></p>}
             <div className='form'>
             <InputGroup className="mb-3">
+            <DropdownButton
+            variant="outline-dark"
+            title="Search by"
+            id="dropdown-basic-button"
+            name='searchType'
+            onSelect={handleTypeChange}
+            >
+                <Dropdown.Item name="searchType" eventKey='Name'>Name</Dropdown.Item>
+                <Dropdown.Item name="searchType" eventKey='Type' >Type</Dropdown.Item>
+                <Dropdown.Item name="searchType" eventKey='Ability' >Ability</Dropdown.Item>
+                <Dropdown.Item name="searchType" eventKey='Habitat' >Habitat</Dropdown.Item>
+            </DropdownButton>
                 <FormControl
-                placeholder="Pokemon's name"
-                aria-label="Pokemon's name"
+                placeholder={`Pokemon's ${searchType}`}
+                aria-label={`Pokemon's ${searchType}`}
                 aria-describedby="basic-addon2"
                 name='search'
                 value={search}
                 onChange={handleChange}
                 />
-                <Button variant="outline-secondary" id="button-addon2" onClick={submit}>
+                <Button variant="outline-dark" id="button-addon2" onClick={()=>submit(searchType)}>
                 <FiSearch/>
                 </Button>
             </InputGroup>
             </div>
-            {/* on progress */}
-            {/* <div className='filter'>
-                <select onChange={handleChange} name="nType" className='select'>
-                        <option value={false}>Type</option>
-                        {pokeTypes.Poke.map((type,index)=><option key={index} value={type.name}>{type.name}</option>)}
-                </select>
-            </div> */}
         </header>
     )
 }

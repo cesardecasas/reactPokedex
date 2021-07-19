@@ -41,28 +41,22 @@ const Main =(props)=>{
         props.updateValue(e.target.name, parseInt(e.target.innerHTML))
     }
 
-    const populate= async()=>{
-        try {
+    const populate= ()=>{
             props.getPokemon(limit,0)
             props.updateValue('page',1)
-        } catch (error) {
-            console.log(error)
-        }
+        
     }
 
-    const nextPage=async()=>{
+    const nextPage=()=>{
             props.updateValue('page',page+1)
             props.getPokemon(limit,((1+page)*limit)-limit)
     }
 
-    const prevPage=async()=>{
-        try {
+    const prevPage=()=>{
             props.updateValue('page', page-1)
-            await props.getPokemon(limit,(page*limit)-limit)
+            props.getPokemon(limit,(page*limit)-limit)
             console.log(page)
-        } catch (error) {
-            console.log(error)
-        }
+        
     }
     const submit=(n)=>{
             props.getInf(n)
@@ -82,10 +76,10 @@ const Main =(props)=>{
                 <PokeGrid pokemons={pokemons} submit={submit} inf={inf} handleChange={handleChange} saveCache={props.saveCache} pokeCache={pokeCache} />
                 <div className='bottom'>
                 <DropdownButton id="dropdown-basic-button" title="Limit" name="limit" onChange={handleIntChange}>
-                    <Dropdown.Item onClick={handleIntChange} name='limit' value='12' >12</Dropdown.Item>
-                    <Dropdown.Item onClick={handleIntChange} name='limit' value={20}>20</Dropdown.Item>
-                    <Dropdown.Item onClick={handleIntChange} name='limit' value='50'>50</Dropdown.Item>
-                    <Dropdown.Item onClick={handleIntChange} name='limit' value='100'>100</Dropdown.Item>
+                    <Dropdown.Item onClick={handleIntChange} name='limit'>12</Dropdown.Item>
+                    <Dropdown.Item onClick={handleIntChange} name='limit'>20</Dropdown.Item>
+                    <Dropdown.Item onClick={handleIntChange} name='limit'>50</Dropdown.Item>
+                    <Dropdown.Item onClick={handleIntChange} name='limit'>100</Dropdown.Item>
                 </DropdownButton>
                     <div>
                         <br/>

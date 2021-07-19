@@ -6,10 +6,12 @@ const initialState = {
     page:1,
     pokemons:[],
     inf:{},
-    pokeCache:{}
+    pokeCache:{},
+    searchType:'Name'
 }
 
 const Reducer=( state =initialState, action)=>{
+    console.log(action)
     switch(action.type){
         case SEARCH_VALUE:
             return{...state, [action.payload.name]: action.payload.value}

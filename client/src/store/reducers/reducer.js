@@ -5,9 +5,14 @@ const initialState = {
     limit:12,
     page:1,
     pokemons:[],
+    typeSearch:[],
+    habitatSearch:[],
+    abilitySearch:[],
     inf:{},
     pokeCache:{},
-    searchType:'Name'
+    searchType:'Name',
+    render:[],
+    orderBy:'Pokedex #'
 }
 
 const Reducer=( state =initialState, action)=>{

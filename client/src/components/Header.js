@@ -44,6 +44,23 @@ const Header=(props)=>{
         try {
             const pokes = await getSearched(searchType,search.toLowerCase())
             setError(false)
+
+            // switch(searchType){
+            //     case 'Type':
+            //         props.updateValue('typeSearch', pokes.pokemon)
+            //         props.updateValue('render', pokes.pokemon)
+            //         break
+            //     case 'Ability':
+            //         props.updateValue('abilitySearch', pokes.pokemon)
+            //         props.updateValue('render', pokes.pokemon)
+            //         break
+            //     case 'Habitat':
+            //         props.updateValue('habitatSearch', pokes.pokemon_species)
+            //         props.updateValue('render', pokes.pokemon)
+            //         break
+            //     default:
+            //         return props.updateValue('pokemons', pokes.pokemon)
+            // }
             if(pokes.pokemon){
                 props.updateValue('pokemons', pokes.pokemon)
                 return

@@ -24,7 +24,7 @@ const mapDispatchToProps =(dispatch)=>{
 }
 
 const Main =(props)=>{
-    const {limit, page, pokemons, inf, pokeCache} = props.state
+    const {limit, page, pokemons, inf, pokeCache, render, orderBy} = props.state
 
 
     const handleChange=(e)=>{
@@ -37,14 +37,46 @@ const Main =(props)=>{
         
     }
 
+    const handleOrderChange=(e)=>{
+            props.updateValue('orderBy', e)
+            changeOrder(e)
+    }
+
     const handleIntChange=(e)=>{
         props.updateValue(e.target.name, parseInt(e.target.innerHTML))
+    }
+
+    const changeOrder = (e)=>{
+        switch (e) {
+            case 'Name':
+                let a = pokemons.sort((a, b) => {
+                    let fa = a.name.toLowerCase(),
+                        fb = b.name.toLowerCase();
+                
+                    if (fa < fb) {
+                        return -1;
+                    }
+                    if (fa > fb) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                console.log(a)
+                return props.updateValue('pokemons', a)
+                case 'Pokedex #':
+                    let b = pokemons.sort((a, b) => {
+                        return a.url.split('pokemon/')[1].split('/')[0] - b.url.split('pokemon/')[1].split('/')[0]
+                    });
+                    console.log(b)
+                    return props.updateValue('pokemons', b)
+            default:
+                break;
+        }
     }
 
     const populate= ()=>{
             props.getPokemon(limit,0)
             props.updateValue('page',1)
-        
     }
 
     const nextPage=()=>{
@@ -58,12 +90,9 @@ const Main =(props)=>{
             console.log(page)
         
     }
-    const submit=(n)=>{
-            props.getInf(n)
-    }
 
     
-   
+
     useEffect(()=>{
         populate()
     },[limit])
@@ -72,8 +101,19 @@ const Main =(props)=>{
         <main>
             <Header/> 
             <br/>
+            <DropdownButton
+            variant="outline-dark"
+            title={`Order by ${orderBy}`}
+            id="dropdown-basic-button"
+            name='searchType'
+            onSelect={handleOrderChange}
+            >
+                <Dropdown.Item name="searchType" eventKey='Name'>Name</Dropdown.Item>
+                <Dropdown.Item name="searchType" eventKey='Type' >Type</Dropdown.Item>
+                <Dropdown.Item name="searchType" eventKey='Pokedex #' >Pokedex #</Dropdown.Item>
+            </DropdownButton>
               <div>
-                <PokeGrid pokemons={pokemons} submit={submit} inf={inf} handleChange={handleChange} saveCache={props.saveCache} pokeCache={pokeCache} />
+                <PokeGrid pokemons={!render ? render : pokemons} inf={inf} handleChange={handleChange} saveCache={props.saveCache} pokeCache={pokeCache} />
                 <div className='bottom'>
                 <DropdownButton id="dropdown-basic-button" title="Limit" name="limit" onChange={handleIntChange}>
                     <Dropdown.Item onClick={handleIntChange} name='limit'>12</Dropdown.Item>

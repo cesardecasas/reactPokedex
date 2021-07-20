@@ -6,6 +6,8 @@ import Header from './components/Header'
 import PokeGrid from './components/PokeGrid'
 import {DropdownButton, Dropdown, Button} from 'react-bootstrap'
 import { GrLinkPrevious, GrLinkNext} from 'react-icons/gr'
+import Sort from './components/Sort'
+
 
 const mapStateToProps =({state})=>{
     return{
@@ -37,42 +39,10 @@ const Main =(props)=>{
         
     }
 
-    const handleOrderChange=(e)=>{
-            props.updateValue('orderBy', e)
-            changeOrder(e)
-    }
-
     const handleIntChange=(e)=>{
         props.updateValue(e.target.name, parseInt(e.target.innerHTML))
     }
 
-    const changeOrder = (e)=>{
-        switch (e) {
-            case 'Name':
-                let a = pokemons.sort((a, b) => {
-                    let fa = a.name.toLowerCase(),
-                        fb = b.name.toLowerCase();
-                
-                    if (fa < fb) {
-                        return -1;
-                    }
-                    if (fa > fb) {
-                        return 1;
-                    }
-                    return 0;
-                });
-                console.log(a)
-                return props.updateValue('pokemons', a)
-                case 'Pokedex #':
-                    let b = pokemons.sort((a, b) => {
-                        return a.url.split('pokemon/')[1].split('/')[0] - b.url.split('pokemon/')[1].split('/')[0]
-                    });
-                    console.log(b)
-                    return props.updateValue('pokemons', b)
-            default:
-                break;
-        }
-    }
 
     const populate= ()=>{
             props.getPokemon(limit,0)
@@ -101,17 +71,11 @@ const Main =(props)=>{
         <main>
             <Header/> 
             <br/>
-            <DropdownButton
-            variant="outline-dark"
-            title={`Order by ${orderBy}`}
-            id="dropdown-basic-button"
-            name='searchType'
-            onSelect={handleOrderChange}
-            >
-                <Dropdown.Item name="searchType" eventKey='Name'>Name</Dropdown.Item>
-                <Dropdown.Item name="searchType" eventKey='Type' >Type</Dropdown.Item>
-                <Dropdown.Item name="searchType" eventKey='Pokedex #' >Pokedex #</Dropdown.Item>
-            </DropdownButton>
+            <Sort
+            pokemons={pokemons}
+            updateValue={props.updateValue}
+            orderBy={orderBy}
+            />
               <div>
                 <PokeGrid pokemons={!render ? render : pokemons} inf={inf} handleChange={handleChange} saveCache={props.saveCache} pokeCache={pokeCache} />
                 <div className='bottom'>

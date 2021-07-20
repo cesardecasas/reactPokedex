@@ -4,6 +4,11 @@
 
 }
 
+.sort{
+  align-self: right;
+  align-content: right;
+}
+
 .poke-grid{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;

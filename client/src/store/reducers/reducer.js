@@ -12,7 +12,8 @@ const initialState = {
     pokeCache:{},
     searchType:'Name',
     render:[],
-    orderBy:'Pokedex #'
+    orderBy:'Pokedex #',
+    filterArr:null
 }
 
 const Reducer=( state =initialState, action)=>{

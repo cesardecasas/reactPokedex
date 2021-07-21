@@ -8,7 +8,7 @@ import Spinner from 'react-bootstrap/Spinner'
 
 
 const Pokemon =(props)=>{
-    const{number, saveCache, pokeCache}=props
+    const{number, saveCache, pokeCache, filterArr}=props
     
     const [open, setOpen] = useState(false)
     const [pokemon, setPokemon]= useState({})

@@ -20,13 +20,11 @@ const Sort =(props)=>{
                     }
                     return 0;
                 });
-                console.log(a)
                 return props.updateValue('pokemons', a)
                 case 'Pokedex #':
                     let b = pokemons.sort((a, b) => {
                         return a.url.split('pokemon/')[1].split('/')[0] - b.url.split('pokemon/')[1].split('/')[0]
                     });
-                    console.log(b)
                     return props.updateValue('pokemons', b)
             default:
                 break;

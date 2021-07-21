@@ -26,7 +26,7 @@ const mapDispatchToProps =(dispatch)=>{
 }
 
 const Main =(props)=>{
-    const {limit, page, pokemons, inf, pokeCache, render, orderBy} = props.state
+    const {limit, page, pokemons, inf, pokeCache,orderBy, filterArr} = props.state
 
 
     const handleChange=(e)=>{
@@ -61,6 +61,11 @@ const Main =(props)=>{
         
     }
 
+    const filter = ()=>{
+        Object.values(pokeCache).forEach(val => console.log(val.weight))
+        
+    }
+
     
 
     useEffect(()=>{
@@ -71,15 +76,16 @@ const Main =(props)=>{
         <main>
             <Header/> 
             <br/>
+            < button onClick={filter}>press me</button>
             <Sort
             pokemons={pokemons}
             updateValue={props.updateValue}
             orderBy={orderBy}
             />
               <div>
-                <PokeGrid pokemons={!render ? render : pokemons} inf={inf} handleChange={handleChange} saveCache={props.saveCache} pokeCache={pokeCache} />
+                <PokeGrid updateValue={props.updateValue} filterArr={filterArr} pokemons={pokemons} inf={inf} handleChange={handleChange} saveCache={props.saveCache} pokeCache={pokeCache} />
                 <div className='bottom'>
-                <DropdownButton id="dropdown-basic-button" title="Limit" name="limit" onChange={handleIntChange}>
+                <DropdownButton id="dropdown-basic-button" title={`Limit: ${limit}`} name="limit" onChange={handleIntChange}>
                     <Dropdown.Item onClick={handleIntChange} name='limit'>12</Dropdown.Item>
                     <Dropdown.Item onClick={handleIntChange} name='limit'>20</Dropdown.Item>
                     <Dropdown.Item onClick={handleIntChange} name='limit'>50</Dropdown.Item>

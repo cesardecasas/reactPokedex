@@ -4,6 +4,7 @@ import {search, getPokemon, getInf, getPokeTy, saveCache} from './store/actions/
 import Footer from './components/Footer'
 import Header from './components/Header'
 import PokeGrid from './components/PokeGrid'
+import Filter from './components/Filter'
 import {DropdownButton, Dropdown, Button} from 'react-bootstrap'
 import { GrLinkPrevious, GrLinkNext} from 'react-icons/gr'
 import Sort from './components/Sort'
@@ -61,10 +62,6 @@ const Main =(props)=>{
         
     }
 
-    const filter = ()=>{
-        Object.values(pokeCache).forEach(val => console.log(val.weight))
-        
-    }
 
     
 
@@ -76,7 +73,7 @@ const Main =(props)=>{
         <main>
             <Header/> 
             <br/>
-            < button onClick={filter}>press me</button>
+            <Filter pokeCache={pokeCache} pokemons={pokemons} updateValue={props.updateValue} />
             <Sort
             pokemons={pokemons}
             updateValue={props.updateValue}

@@ -5,10 +5,8 @@ import Spinner from 'react-bootstrap/Spinner'
 
 const PokeGrid =(props)=>{
 
-    const{pokemons, saveCache, pokeCache, limit, page}=props
+    const{pokemons, saveCache, pokeCache, limit, page,pokeOnScreen}=props
 
-    const temp = [...pokemons]
-    let pokeOnScreen = temp.splice(page*limit-limit, limit)
     return(
         <div className='poke-grid'>
                 {pokeOnScreen ? pokeOnScreen.map((poke, index)=>{

@@ -9,7 +9,6 @@ import {DropdownButton, Dropdown, Button} from 'react-bootstrap'
 import { GrLinkPrevious, GrLinkNext} from 'react-icons/gr'
 import Sort from './components/Sort'
 
-
 const mapStateToProps =({state})=>{
     return{
         state
@@ -29,7 +28,6 @@ const mapDispatchToProps =(dispatch)=>{
 const Main =(props)=>{
     const {limit, page, pokemons, inf, pokeCache,orderBy, filterArr} = props.state
 
-
     const handleChange=(e)=>{
         switch (e.target.value){
             case "false": 
@@ -44,30 +42,36 @@ const Main =(props)=>{
         props.updateValue(e.target.name, parseInt(e.target.innerHTML))
     }
 
-
     const populate= ()=>{
             props.getPokemon(1118,0)
             props.updateValue('page',1)
     }
 
     const nextPage=()=>{
-            props.updateValue('page',page+1)
-            
+            props.updateValue('page',page+1)       
     }
 
     const prevPage=()=>{
             props.updateValue('page', page-1)
-            
-        
     }
-
-
-    
 
     useEffect(()=>{
         populate()
-    },[limit])
+    },[])
 
+    const temp = [...pokemons]
+    let pokeOnScreen = orderBy === "Pokedex #" ?  temp.splice(page*limit-limit, limit).sort((a, b) => a.url.split('pokemon/')[1].split('/')[0] - b.url.split('pokemon/')[1].split('/')[0]) : temp.splice(page*limit-limit, limit).sort((a, b) => {
+        let fa = a.name.toLowerCase(),
+            fb = b.name.toLowerCase();
+    
+        if (fa < fb) {
+            return -1;
+        }
+        if (fa > fb) {
+            return 1;
+        }
+        return 0;
+    })
 
     return (
         <main>
@@ -75,12 +79,13 @@ const Main =(props)=>{
             <br/>
             <Filter pokeCache={pokeCache} pokemons={pokemons} updateValue={props.updateValue} />
             <Sort
+            pokeOnScreen={pokeOnScreen}
             pokemons={pokemons}
             updateValue={props.updateValue}
             orderBy={orderBy}
             />
               <div>
-                <PokeGrid page={page} updateValue={props.updateValue} filterArr={filterArr} pokemons={pokemons} inf={inf} handleChange={handleChange} saveCache={props.saveCache} pokeCache={pokeCache} limit={limit}/>
+                <PokeGrid pokeOnScreen={pokeOnScreen} page={page} updateValue={props.updateValue} filterArr={filterArr} pokemons={pokemons} inf={inf} handleChange={handleChange} saveCache={props.saveCache} pokeCache={pokeCache} limit={limit}/>
                 <div className='bottom'>
                 <DropdownButton id="dropdown-basic-button" title={`Limit: ${limit}`} name="limit" onChange={handleIntChange}>
                     <Dropdown.Item onClick={handleIntChange} name='limit'>12</Dropdown.Item>

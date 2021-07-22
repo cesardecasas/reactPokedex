@@ -8,6 +8,7 @@ import Filter from './components/Filter'
 import {DropdownButton, Dropdown, Button} from 'react-bootstrap'
 import { GrLinkPrevious, GrLinkNext} from 'react-icons/gr'
 import Sort from './components/Sort'
+import { Sorting, Filtering } from './services/filterServices'
 
 const mapStateToProps =({state})=>{
     return{
@@ -26,7 +27,7 @@ const mapDispatchToProps =(dispatch)=>{
 }
 
 const Main =(props)=>{
-    const {limit, page, pokemons, inf, pokeCache,orderBy, filterArr} = props.state
+    const {limit, page, pokemons, pokeCache,orderBy, filter} = props.state
 
     const handleChange=(e)=>{
         switch (e.target.value){
@@ -42,9 +43,8 @@ const Main =(props)=>{
         props.updateValue(e.target.name, parseInt(e.target.innerHTML))
     }
 
-    const populate= ()=>{
+    const populate=()=>{
             props.getPokemon(1118,0)
-            props.updateValue('page',1)
     }
 
     const nextPage=()=>{
@@ -60,24 +60,19 @@ const Main =(props)=>{
     },[])
 
     const temp = [...pokemons]
-    let pokeOnScreen = orderBy === "Pokedex #" ?  temp.splice(page*limit-limit, limit).sort((a, b) => a.url.split('pokemon/')[1].split('/')[0] - b.url.split('pokemon/')[1].split('/')[0]) : temp.splice(page*limit-limit, limit).sort((a, b) => {
-        let fa = a.name.toLowerCase(),
-            fb = b.name.toLowerCase();
+
+    let pokeOnScreen =  temp.sort((a, b) => Sorting(a,b,orderBy) ).filter(poke=> Filtering(poke, filter, pokeCache)).splice(page*limit-limit, limit)
     
-        if (fa < fb) {
-            return -1;
-        }
-        if (fa > fb) {
-            return 1;
-        }
-        return 0;
-    })
+    const filters={
+        weight:[],
+        type:[],
+        height:[]
+    }
 
     return (
         <main>
             <Header/> 
             <br/>
-            <Filter pokeCache={pokeCache} pokemons={pokemons} updateValue={props.updateValue} />
             <Sort
             pokeOnScreen={pokeOnScreen}
             pokemons={pokemons}
@@ -85,7 +80,10 @@ const Main =(props)=>{
             orderBy={orderBy}
             />
               <div>
-                <PokeGrid pokeOnScreen={pokeOnScreen} page={page} updateValue={props.updateValue} filterArr={filterArr} pokemons={pokemons} inf={inf} handleChange={handleChange} saveCache={props.saveCache} pokeCache={pokeCache} limit={limit}/>
+                  <div className='divider'>
+                    <Filter filters={filters} updateValue={props.updateValue} />
+                    <PokeGrid pokeCache={pokeCache} pokeOnScreen={pokeOnScreen} updateValue={props.updateValue} handleChange={handleChange} saveCache={props.saveCache} />
+                  </div>
                 <div className='bottom'>
                 <DropdownButton id="dropdown-basic-button" title={`Limit: ${limit}`} name="limit" onChange={handleIntChange}>
                     <Dropdown.Item onClick={handleIntChange} name='limit'>12</Dropdown.Item>

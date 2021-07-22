@@ -10,7 +10,11 @@ const initialState = {
     searchType:'Name',
     render:[],
     orderBy:'Pokedex #',
-    filterArr:null
+    filter:{
+        weight:[],
+        type:[],
+        height:[]
+    }
 }
 
 const Reducer=( state =initialState, action)=>{

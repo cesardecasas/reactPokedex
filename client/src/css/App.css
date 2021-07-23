@@ -139,6 +139,9 @@ footer{
   width: 10%;
   margin-left: 1.7%;
   grid-column: 1;
+  background-color: #ffffff85;
+  align-content: left;
+
 }
 
 .divider{

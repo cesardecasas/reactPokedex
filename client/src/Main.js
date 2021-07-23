@@ -9,6 +9,7 @@ import {DropdownButton, Dropdown, Button} from 'react-bootstrap'
 import { GrLinkPrevious, GrLinkNext} from 'react-icons/gr'
 import Sort from './components/Sort'
 import { Sorting, Filtering } from './services/filterServices'
+import { getPoke} from './services/service'
 
 const mapStateToProps =({state})=>{
     return{
@@ -30,12 +31,7 @@ const Main =(props)=>{
     const {limit, page, pokemons, pokeCache,orderBy, filter} = props.state
 
     const handleChange=(e)=>{
-        switch (e.target.value){
-            case "false": 
-                return props.updateValue(e.target.name, false)
-            default:
-                return props.updateValue(e.target.name, e.target.value)
-        }
+        props.updateValue(e.target.name, e.target.value)
         
     }
 
@@ -43,8 +39,17 @@ const Main =(props)=>{
         props.updateValue(e.target.name, parseInt(e.target.innerHTML))
     }
 
-    const populate=()=>{
-            props.getPokemon(1118,0)
+    const populate=async()=>{
+            await props.getPokemon(1118,0)
+            
+    }
+
+    const getCache = ()=>{
+        pokemons.forEach(async(poke) =>{
+            const n = poke.url.split('pokemon/')[1].split('/')[0]
+            const inf = await getPoke(n)
+            props.saveCache(n, inf)
+        }) 
     }
 
     const nextPage=()=>{
@@ -55,13 +60,13 @@ const Main =(props)=>{
             props.updateValue('page', page-1)
     }
 
+
     useEffect(()=>{
         populate()
+        
     },[])
 
-    const temp = [...pokemons]
-
-    let pokeOnScreen =  temp.sort((a, b) => Sorting(a,b,orderBy) ).filter(poke=> Filtering(poke, filter, pokeCache)).splice(page*limit-limit, limit)
+    let pokeOnScreen =  pokemons.sort((a, b) => Sorting(a,b,orderBy) ).filter(poke=> true).splice(page*limit-limit, limit)
     
     const filters={
         weight:[],
@@ -79,31 +84,34 @@ const Main =(props)=>{
             updateValue={props.updateValue}
             orderBy={orderBy}
             />
+
+            <div>
+            <div className='divider'>
+              {/* <Filter filters={filters} updateValue={props.updateValue} /> */}
+              <PokeGrid pokeCache={pokeCache} pokeOnScreen={pokeOnScreen} updateValue={props.updateValue} handleChange={handleChange} saveCache={props.saveCache} />
+            </div>
+          <div className='bottom'>
+          <DropdownButton id="dropdown-basic-button" title={`Limit: ${limit}`} name="limit" onChange={handleIntChange}>
+              <Dropdown.Item onClick={handleIntChange} name='limit'>12</Dropdown.Item>
+              <Dropdown.Item onClick={handleIntChange} name='limit'>20</Dropdown.Item>
+              <Dropdown.Item onClick={handleIntChange} name='limit'>50</Dropdown.Item>
+              <Dropdown.Item onClick={handleIntChange} name='limit'>100</Dropdown.Item>
+          </DropdownButton>
               <div>
-                  <div className='divider'>
-                    <Filter filters={filters} updateValue={props.updateValue} />
-                    <PokeGrid pokeCache={pokeCache} pokeOnScreen={pokeOnScreen} updateValue={props.updateValue} handleChange={handleChange} saveCache={props.saveCache} />
+                  <br/>
+                  {page <= 1 ?  <Button variant="outline-dark" onClick={nextPage} ><GrLinkNext/> </Button> : 
+                  <div>
+                      <Button variant="outline-dark" onClick={prevPage} ><GrLinkPrevious/></Button>
+                      <Button variant="outline-dark" onClick={nextPage} ><GrLinkNext/></Button>
                   </div>
-                <div className='bottom'>
-                <DropdownButton id="dropdown-basic-button" title={`Limit: ${limit}`} name="limit" onChange={handleIntChange}>
-                    <Dropdown.Item onClick={handleIntChange} name='limit'>12</Dropdown.Item>
-                    <Dropdown.Item onClick={handleIntChange} name='limit'>20</Dropdown.Item>
-                    <Dropdown.Item onClick={handleIntChange} name='limit'>50</Dropdown.Item>
-                    <Dropdown.Item onClick={handleIntChange} name='limit'>100</Dropdown.Item>
-                </DropdownButton>
-                    <div>
-                        <br/>
-                        {page <= 1 ?  <Button variant="outline-dark" onClick={nextPage} ><GrLinkNext/> </Button> : 
-                        <div>
-                            <Button variant="outline-dark" onClick={prevPage} ><GrLinkPrevious/></Button>
-                            <Button variant="outline-dark" onClick={nextPage} ><GrLinkNext/></Button>
-                        </div>
-                        
-                        }
-                    </div>
-                    <br/>
-                </div>
-            </div> 
+                  
+                  }
+              </div>
+              <br/>
+          </div>
+      </div> 
+
+              
             <Footer/>
             
         </main>
